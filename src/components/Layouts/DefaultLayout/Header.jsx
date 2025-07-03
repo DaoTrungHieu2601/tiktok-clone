@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion, faCircleXmark, faEarthAsia, faEllipsisVertical, faKeyboard, faMagnifyingGlass, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faCircleQuestion, faCircleXmark, faCoins, faEarthAsia, faEllipsisVertical, faGear, faKeyboard, faMagnifyingGlass, faSignOut, faSpinner, faUser } from "@fortawesome/free-solid-svg-icons";
 import 'tippy.js/dist/tippy.css';
 import Tippy from '@tippyjs/react/headless';
 import { useState } from "react";
@@ -7,7 +7,10 @@ import Wrapper from "../../Popper/Wrapper";
 import AccountItem from "../../AccountItem/AccountItem";
 import { Button } from "../../ui/Button";
 import Menu from "@/components/Popper/Menu";
-
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { InboxIcon, MessageIcon, UploadIcon } from "@/components/Icons/Icon";
+import Image from "@/components/Images/Image";
+import { ScissorsLineDashed } from "lucide-react";
 const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faEarthAsia} />,
@@ -39,11 +42,36 @@ const MENU_ITEMS = [
     }
 ]
 
+const USER_MENU = [
+    {
+        icon: <FontAwesomeIcon icon={faUser} />,
+        title: "View profile",
+        to: '/@hieutoki'
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCoins} />,
+        title: "Get coins",
+        to: '/coin'
+    },
+    {
+        icon: <FontAwesomeIcon icon={faGear} />,
+        title: "Settings",
+        to: '/setting'
+    },
+    ...MENU_ITEMS,
+    {
+        icon: <FontAwesomeIcon icon={faSignOut} />,
+        title: "Logout",
+        to: '/logouts'
+    },
+]
+
 const Header = () => {
     const [searchResult, setSearchResult] = useState([]);
+    const currentUsers = true;
     useState(() => {
         setTimeout(() => {
-            setSearchResult([])
+            setSearchResult([1, 3, 4, 5])
         })
     }, [])
 
@@ -87,28 +115,79 @@ const Header = () => {
                 >
                     <div className="flex items-center w-[361px] h-[46px] pl-4 bg-[#161823]/[0.06] rounded-full focus-within:border-[1.5px]">
                         <input className="flex-1 w-full h-full bg-transparent text-black text-[1rem] border-none outline-none" placeholder="Search accounts and vides" />
-                        <button className="">
-                            <FontAwesomeIcon icon={faCircleXmark} />
-                        </button>
-                        {/* <div className="">
-                            <FontAwesomeIcon icon={faSpinner} />
-                        </div> */}
+                        <div className="relative w-8 h-8 flex items-center justify-center">
+                            <button className="absolute inset-0 flex items-center justify-center">
+                                <FontAwesomeIcon icon={faCircleXmark} />
+                            </button>
+                            <button className="absolute inset-0 flex items-center justify-center">
+                                <FontAwesomeIcon icon={faSpinner} />
+                            </button>
+                        </div>
                         <button className="w-[52px] h-[full] border-none outline-none">
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </button>
                     </div>
                 </Tippy>
-                <div className="action">
-                    <Button variant="link">Upload</Button>
-                    <Button className="ml-4" size='lg' variant="destructive" to="/login">Login</Button>
+                <div className="action flex items-center">
+                    {currentUsers ?
+                        <>
+                            <TooltipProvider delayDuration={0}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button className="text-[1.1rem] text-[#161823] bg-transparent py-[4px] px-[12px]">
+                                            <UploadIcon />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Upload file
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button className="text-[1.1rem] text-[#161823] bg-transparent py-[4px] px-[12px]">
+                                            <MessageIcon />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Message
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <TooltipProvider delayDuration={0}>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <button className="text-[1.1rem] text-[#161823] bg-transparent py-[4px] px-[12px]">
+                                            <InboxIcon />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        Inbox
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </>
+                        :
+                        <>
+                            <Button variant="link">Upload</Button>
+                            <Button className="ml-4" size='lg' variant="destructive" to="/login">Login</Button>
 
-                    <Menu
-                        items={MENU_ITEMS}
-                        onChange={handleMenuChange}
-                    >
-                        <button className="ml-4">
-                            <FontAwesomeIcon className="mx-2" icon={faEllipsisVertical} />
-                        </button>
+                        </>
+
+                    }
+                    <Menu items={currentUsers ? USER_MENU : MENU_ITEMS} onChange={handleMenuChange}>
+                        {currentUsers ?
+                            <Image className="cursor-pointer w-7 h-7 rounded-full object-cover ml-[12px]"
+                                alt="Hieu Toki"
+                                src="https://picsum.photos/200/300"
+                            />
+
+                            :
+                            <button className="ml-4">
+                                <FontAwesomeIcon className="mx-2" icon={faEllipsisVertical} />
+                            </button>
+                        }
                     </Menu>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "../Images/Image";
 
 const AccountItem = () => {
     return (
         <div className="flex items-center py-[6px] px-4 cursor-pointer hover:bg-[rgba(22,24,35,0.03)]">
-            <img className="avatar w-10 h-10 rounded-full object-cover" src="https://picsum.photos/200/300" alt="Hiếu Toki" />
+            <Image className="avatar w-10 h-10 rounded-full object-cover" src="https://picsum.photos/200/300" alt="Hiếu Toki" />
             <div className="info flex-1 ml-3">
                 <p className="name text-[1rem] font-semibold">
                     <span>Đào Trung Hiếu</span>
